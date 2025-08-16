@@ -35,8 +35,10 @@ AppDataSource.initialize()
   });
 
 import storefrontRouter from './routes/storefront';
+import profileRouter from './routes/profile';
 
 app.use(storefrontRouter);
+app.use(profileRouter);
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
