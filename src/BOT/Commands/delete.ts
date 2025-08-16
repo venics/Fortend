@@ -3,16 +3,18 @@ import {
   SlashCommandBuilder,
   EmbedBuilder,
 } from "discord.js";
-import { User } from "../../entities/User";
+import User from "../../db/User";
+import Profiles from "../../db/Profiles";
+import Tournaments from "../../db/Tournaments";
 
 export default {
   data: new SlashCommandBuilder()
     .setName("delete")
-    .setDescription("Delete your Core account."),
+    .setDescription("Permanently delete your Core account and all associated data."),
 
   async execute(interaction: ChatInputCommandInteraction) {
     try {
-      const user = await User.findOne({ where: { id: interaction.user.id } });
+      const user = await User.findOne({ discordId: interaction.user.id });
 
       if (!user) {
         return interaction.reply({
@@ -21,11 +23,13 @@ export default {
         });
       }
 
-      await user.remove();
+      await User.deleteOne({ accountId: user.accountId });
+      await Profiles.deleteOne({ accountId: user.accountId });
+      await Tournaments.deleteOne({ accountId: user.accountId });
 
       const embed = new EmbedBuilder()
         .setTitle("Account Deleted")
-        .setDescription("Your Core account has been successfully deleted.")
+        .setDescription("Your Core account and all associated data have been successfully deleted.")
         .setColor("Red")
         .setTimestamp();
 
@@ -34,9 +38,9 @@ export default {
         ephemeral: true,
       });
     } catch (err) {
-      console.error(err);
+      console.error("Error during account deletion:", err);
       return await interaction.reply({
-        content: "Could not delete your account, please contact support!",
+        content: "An error occurred while deleting your account. Please contact support.",
         ephemeral: true,
       });
     }

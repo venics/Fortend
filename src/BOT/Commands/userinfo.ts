@@ -4,7 +4,7 @@ import {
   EmbedBuilder,
   PermissionFlagsBits,
 } from "discord.js";
-import { User } from "../../entities/User";
+import User from "../../db/User";
 import 'dotenv/config';
 
 export default {
@@ -28,10 +28,10 @@ export default {
       return await interaction.reply({ embeds: [embed], ephemeral: true });
     }
 
-    const userId = interaction.options.getString("user", true);
+    const discordId = interaction.options.getString("user", true);
 
     try {
-      const user = await User.findOne({ where: { id: userId } });
+      const user = await User.findOne({ discordId: discordId });
 
       if (!user) {
         return interaction.reply({
@@ -43,9 +43,11 @@ export default {
       const embed = new EmbedBuilder()
         .setTitle(`User Info: ${user.username}`)
         .addFields(
-          { name: "Account ID", value: user.id, inline: true },
+          { name: "Account ID", value: user.accountId, inline: true },
           { name: "Username", value: user.username, inline: true },
-          { name: "V-Bucks", value: user.vbucks.toString(), inline: true }
+          { name: "V-Bucks", value: user.vbucks.toString(), inline: true },
+          { name: "Email", value: user.email, inline: true },
+          { name: "Banned", value: user.banned.toString(), inline: true },
         )
         .setColor("#00FF99")
         .setTimestamp();
@@ -55,7 +57,7 @@ export default {
         ephemeral: true,
       });
     } catch (err) {
-      console.error(err);
+      console.error("Error fetching user info:", err);
       return await interaction.reply({
         content: "Could not retrieve user info, please contact support!",
         ephemeral: true,

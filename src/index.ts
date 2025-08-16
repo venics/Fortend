@@ -1,38 +1,37 @@
-import 'reflect-metadata';
 import express from 'express';
 import dotenv from 'dotenv';
-import { DataSource } from 'typeorm';
-import { User } from './entities/User';
+import mongoose from 'mongoose';
+import { startBot } from './BOT';
+import storefrontRouter from './routes/storefront';
+import profileRouter from './routes/profile';
 
 dotenv.config({ path: '.example.env' });
 
 const app = express();
 const port = process.env.port || 3000;
+const mongoUri = process.env.MONGODB_URI;
 
-const AppDataSource = new DataSource({
-  type: 'postgres',
-  url: process.env.databaseUrl,
-  entities: [User],
-  synchronize: true, // shouldn't be used in production
-});
+if (!mongoUri) {
+  console.error('MONGODB_URI not found in .env file. Server will not start.');
+  process.exit(1);
+}
 
-import { startBot } from './BOT';
-
-AppDataSource.initialize()
+mongoose.connect(mongoUri)
   .then(() => {
-    console.log('Data Source has been initialized!');
+    console.log('Successfully connected to MongoDB.');
+
     startBot();
+
     app.listen(port, () => {
       console.log(`Server is running on port ${port}`);
     });
   })
   .catch((err) => {
-    console.error('Error during Data Source initialization', err);
+    console.error('Error connecting to MongoDB:', err);
+    process.exit(1);
   });
 
-import storefrontRouter from './routes/storefront';
-import profileRouter from './routes/profile';
-
+app.use(express.json());
 app.use(storefrontRouter);
 app.use(profileRouter);
 

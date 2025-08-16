@@ -1,37 +1,33 @@
-import { User } from '../entities/User';
+import User from '../db/User';
+import Profiles from '../db/Profiles';
 
 export class ProfileService {
-  public async getProfile(userId: string): Promise<any> {
-    const user = await User.findOne({ where: { id: userId } });
+  public async getProfile(accountId: string): Promise<any> {
+    const user = await User.findOne({ accountId });
+    const profileData = await Profiles.findOne({ accountId });
 
-    if (!user) {
-      throw new Error('User not found');
+    if (!user || !profileData) {
+      throw new Error('User or profile not found');
     }
 
-    const profile = {
-      _id: user.id,
-      created: new Date().toISOString(),
-      updated: new Date().toISOString(),
-      rvn: 1,
-      wipeNumber: 1,
-      accountId: user.id,
-      profileId: 'common_core',
-      version: '1.0',
-      items: {
-        'Currency:MtxPurchased': {
-          templateId: 'Currency:MtxPurchased',
-          attributes: {
-            platform: 'Epic',
-          },
-          quantity: user.vbucks,
-        },
-      },
-      stats: {
-        attributes: {
-          mtx_purchase_history: {},
-        },
-      },
-    };
+    const profile = profileData.profile.common_core;
+    profile.accountId = accountId;
+    profile.created = new Date().toISOString();
+    profile.updated = new Date().toISOString();
+    profile.rvn = 1;
+    profile.wipeNumber = 1;
+    profile.version = '1.0';
+
+    if (profile.items && profile.items['Currency:MtxPurchased']) {
+        profile.items['Currency:MtxPurchased'].quantity = user.vbucks;
+    } else {
+        profile.items['Currency:MtxPurchased'] = {
+            templateId: 'Currency:MtxPurchased',
+            attributes: { platform: 'Epic' },
+            quantity: user.vbucks,
+        };
+    }
+
 
     return profile;
   }

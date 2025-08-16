@@ -5,7 +5,26 @@ import {
 } from "discord.js";
 import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
-import { User } from "../../entities/User";
+import User from "../../db/User";
+import Profiles from "../../db/Profiles";
+import Tournaments from "../../db/Tournaments";
+
+// A placeholder for a function that would create the default user profiles
+const createInitialProfiles = (accountId: string) => {
+    return {
+        "common_core": {
+            "items": {
+                "Currency:MtxPurchased": {
+                    "templateId": "Currency:MtxPurchased",
+                    "attributes": { "platform": "Epic" },
+                    "quantity": 0
+                }
+            },
+            "stats": { "attributes": { "mtx_purchase_history": {} } }
+        },
+        // Other profiles would be created here
+    };
+};
 
 export default {
   data: new SlashCommandBuilder()
@@ -23,64 +42,64 @@ export default {
 
   async execute(interaction: ChatInputCommandInteraction) {
     const username = interaction.options.getString("username", true);
-    const emailInput = interaction.options.getString("email", true);
-    const passwordInput = interaction.options.getString("password", true);
-
-    const email = emailInput;
-    const rawPassword = passwordInput;
-
-    const hashedPassword = await bcrypt.hash(rawPassword, 10);
-    const accountId = uuidv4().replace(/-/g, "");
-
-    const exist = await User.findOne({ where: { id: interaction.user.id } });
-    if (exist) {
-      return interaction.reply({
-        content: "You already have an account. Please delete in via /delete!",
-        ephemeral: true,
-      });
-    }
-
-    const existing = await User.findOne({ where: { username } });
-    if (existing) {
-      return interaction.reply({
-        content: "Username is already being used.",
-        ephemeral: true,
-      });
-    }
+    const email = interaction.options.getString("email", true);
+    const password = interaction.options.getString("password", true);
 
     try {
-      await User.create({
-        id: accountId,
-        username,
-        password: hashedPassword,
-        vbucks: 0,
-      }).save();
+        const existingUserByDiscordId = await User.findOne({ discordId: interaction.user.id });
+        if (existingUserByDiscordId) {
+            return interaction.reply({
+                content: "You already have an account. Please use `/delete` first if you want a new one.",
+                ephemeral: true,
+            });
+        }
 
-      const embed = new EmbedBuilder()
-        .setTitle("Welcome to Core!")
-        .setDescription(
-          `Welcome **${username}**! Your account has been created.`
-        )
-        .addFields(
-          { name: "Email", value: email, inline: true },
-          { name: "Account ID", value: accountId, inline: true }
-        )
-        .setColor("#00FF99")
-        .setTimestamp()
-        .setFooter({
-          text: "Core Backend",
+        const existingUserByUsername = await User.findOne({ username });
+        if (existingUserByUsername) {
+            return interaction.reply({
+                content: "That username is already taken.",
+                ephemeral: true,
+            });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const accountId = uuidv4().replace(/-/g, "");
+
+        await User.create({
+            accountId,
+            username,
+            email,
+            password: hashedPassword,
+            discordId: interaction.user.id,
         });
 
-      return await interaction.reply({
-        embeds: [embed],
-        ephemeral: true,
-      });
+        const userProfiles = createInitialProfiles(accountId);
+        await Profiles.create({
+            accountId,
+            profile: userProfiles,
+        });
+
+        await Tournaments.create({ accountId });
+
+        const embed = new EmbedBuilder()
+            .setTitle("Welcome to Core!")
+            .setDescription(`Your account, **${username}**, has been successfully created.`)
+            .addFields(
+                { name: "Email", value: email, inline: true },
+                { name: "Account ID", value: accountId, inline: true }
+            )
+            .setColor("#00FF99")
+            .setTimestamp()
+            .setFooter({ text: "Core Backend" });
+
+        return await interaction.reply({ embeds: [embed], ephemeral: true });
+
     } catch (err) {
-      console.error(err);
-      return await interaction.reply({
-        content: "Could not make your account, please contact support!",
-        ephemeral: true,
-      });
+        console.error("Error during registration:", err);
+        return await interaction.reply({
+            content: "An error occurred while creating your account. Please contact support.",
+            ephemeral: true,
+        });
     }
   },
 };

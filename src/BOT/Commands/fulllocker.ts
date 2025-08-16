@@ -4,7 +4,7 @@ import {
   EmbedBuilder,
   PermissionFlagsBits,
 } from "discord.js";
-import { User } from "../../entities/User";
+import User from "../../db/User";
 import 'dotenv/config';
 
 // Placeholder function for giving a full locker
@@ -20,7 +20,7 @@ export default {
     .setName("fulllocker")
     .setDescription("Give a user full locker!")
     .addStringOption((opt) =>
-      opt.setName("user").setDescription("Users Discord ID").setRequired(true)
+      opt.setName("user").setDescription("The user's Discord ID").setRequired(true)
     )
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 
@@ -36,9 +36,9 @@ export default {
       return await interaction.reply({ embeds: [embed], ephemeral: true });
     }
 
-    const userIdToGive = interaction.options.getString("user", true);
+    const discordIdToGive = interaction.options.getString("user", true);
     try {
-      const user = await User.findOne({ where: { id: userIdToGive } });
+      const user = await User.findOne({ discordId: discordIdToGive });
       if (!user) {
         const embed = new EmbedBuilder()
           .setTitle("Core")
@@ -49,11 +49,11 @@ export default {
         return await interaction.reply({ embeds: [embed], ephemeral: true });
       }
 
-      await giveFullLocker(user.id);
+      await giveFullLocker(user.accountId);
 
       const embed = new EmbedBuilder()
         .setTitle("Core")
-        .setDescription("Successfully gave Full Locker!")
+        .setDescription(`Successfully gave Full Locker to ${user.username}!`)
         .setColor("Green")
         .setTimestamp();
 
