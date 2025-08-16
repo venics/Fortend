@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import { startBot } from './BOT';
 import storefrontRouter from './routes/storefront';
 import profileRouter from './routes/profile';
+import contentRouter from './routes/content';
 
 dotenv.config({ path: '.example.env' });
 
@@ -34,6 +35,7 @@ mongoose.connect(mongoUri)
 app.use(express.json());
 app.use(storefrontRouter);
 app.use(profileRouter);
+app.use(contentRouter);
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
