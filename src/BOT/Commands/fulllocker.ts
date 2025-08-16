@@ -1,0 +1,75 @@
+import {
+  ChatInputCommandInteraction,
+  SlashCommandBuilder,
+  EmbedBuilder,
+  PermissionFlagsBits,
+} from "discord.js";
+import { User } from "../../entities/User";
+import 'dotenv/config';
+
+// Placeholder function for giving a full locker
+const giveFullLocker = async (accountId: string) => {
+  console.log(`Giving full locker to account ${accountId}`);
+  // In a real implementation, this would involve complex logic
+  // to add all cosmetics to the user's profile.
+  return Promise.resolve();
+};
+
+export default {
+  data: new SlashCommandBuilder()
+    .setName("fulllocker")
+    .setDescription("Give a user full locker!")
+    .addStringOption((opt) =>
+      opt.setName("user").setDescription("Users Discord ID").setRequired(true)
+    )
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+
+  async execute(interaction: ChatInputCommandInteraction) {
+    const adminIds = (process.env.ADMIN_DISCORD_IDS || '').split(',');
+    if (!adminIds.includes(interaction.user.id)) {
+      const embed = new EmbedBuilder()
+        .setTitle("Core")
+        .setDescription("You do not have permissions to use this command.")
+        .setColor("Red")
+        .setTimestamp();
+
+      return await interaction.reply({ embeds: [embed], ephemeral: true });
+    }
+
+    const userIdToGive = interaction.options.getString("user", true);
+    try {
+      const user = await User.findOne({ where: { id: userIdToGive } });
+      if (!user) {
+        const embed = new EmbedBuilder()
+          .setTitle("Core")
+          .setDescription("Couldn't find the selected user.")
+          .setColor("Red")
+          .setTimestamp();
+
+        return await interaction.reply({ embeds: [embed], ephemeral: true });
+      }
+
+      await giveFullLocker(user.id);
+
+      const embed = new EmbedBuilder()
+        .setTitle("Core")
+        .setDescription("Successfully gave Full Locker!")
+        .setColor("Green")
+        .setTimestamp();
+
+      return await interaction.reply({ embeds: [embed], ephemeral: true });
+    } catch (err) {
+      console.error(err);
+
+      const embed = new EmbedBuilder()
+        .setTitle("Core")
+        .setDescription(
+          "We ran into an error while giving full locker, please try again later."
+        )
+        .setColor("Red")
+        .setTimestamp();
+
+      return await interaction.reply({ embeds: [embed], ephemeral: true });
+    }
+  },
+};

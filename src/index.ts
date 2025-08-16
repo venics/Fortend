@@ -16,9 +16,12 @@ const AppDataSource = new DataSource({
   synchronize: true, // shouldn't be used in production
 });
 
+import { startBot } from './BOT';
+
 AppDataSource.initialize()
   .then(() => {
     console.log('Data Source has been initialized!');
+    startBot();
     app.listen(port, () => {
       console.log(`Server is running on port ${port}`);
     });
