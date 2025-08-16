@@ -1,61 +1,62 @@
-# Fortnite Private Server Backend
+# Core - Fortnite Private Server Backend
 
-This project is a custom-built backend for a Fortnite private server, developed using Node.js, Express, and TypeORM.
+Welcome to the Core Fortnite private server backend! This project provides the necessary server infrastructure to run a custom Fortnite experience, built with Node.js, Express, and MongoDB.
+
+## ✨ Features
+
+- **Custom Item Shop:** A static, configuration-based item shop.
+- **V-Bucks System:** Basic V-Bucks balance tracking for users.
+- **Discord Bot Integration:** Manage your server and users with powerful Discord commands.
+  - `/register`: Create a new game account.
+  - `/delete`: Delete your game account.
+  - `/fulllocker` (Admin): Grant a full locker to a user (placeholder).
+  - And more!
 
 ## Prerequisites
 
-Before you begin, ensure you have the following installed:
-- [Node.js](https://nodejs.org/) (which includes npm)
-- [PostgreSQL](https://www.postgresql.org/)
+Before you get started, make sure you have the following installed:
+- [Node.js](https://nodejs.org/) (v16 or higher)
+- [npm](https://www.npmjs.com/) (comes with Node.js)
+- [MongoDB](https://www.mongodb.com/try/download/community)
 
-## Setup
+## 🚀 Getting Started
 
-1.  **Clone the repository:**
-    ```sh
-    git clone <repository-url>
-    ```
+### 1. Clone the Repository
+```sh
+git clone <repository-url>
+cd <project-directory>
+```
 
-2.  **Navigate to the project directory:**
-    ```sh
-    cd <project-directory>
-    ```
+### 2. Install Dependencies
+Run the included batch file or use npm directly:
+```sh
+npm install
+```
 
-3.  **Install the dependencies:**
-    You can do this by running the `install-packages.bat` script or by running the following command:
-    ```sh
-    npm install
-    ```
+### 3. Configure Your Environment
+Create a `.env` file in the root of the project by copying the `.example.env` file. You will need to fill in the following values:
 
-4.  **Set up the database:**
-    Make sure you have a PostgreSQL server running and create a new database for the project.
+- `MONGODB_URI`: Your connection string for your MongoDB database.
+  - Example: `mongodb://localhost:27017/CoreBackend`
+- `BOT_TOKEN`: Your Discord bot token.
+- `ADMIN_DISCORD_IDS`: A comma-separated list of Discord User IDs for bot admins (e.g., `123456789,987654321`).
 
-5.  **Configure the environment variables:**
-    Create a new file named `.env` in the root of the project by copying the `.example.env` file. Then, fill in the required values in the `.env` file.
+### 4. Run the Server
+You can run the server in two modes:
 
-## Configuration
+- **Production Mode:**
+  ```sh
+  npm start
+  ```
+- **Development Mode (with auto-restarting on file changes):**
+  ```sh
+  npm run dev
+  ```
 
-The `.env` file contains the following configuration variables:
-
--   `port`: The port the server will run on.
--   `databaseUrl`: The connection URL for your PostgreSQL database (e.g., `postgres://username:password@localhost:5432/dbname`).
--   `bot_token`: Your Discord bot token for the Rich Presence feature.
--   `FORTNITE_API_IO_KEY`: Your API key for `fortniteapi.io`.
-
-## Running the Server
-
--   **For production:**
-    You can use the `start.bat` script or run the following command:
-    ```sh
-    npm start
-    ```
-
--   **For development (with auto-restarting):**
-    ```sh
-    npm run dev
-    ```
+Once the server is running, you should see a confirmation in the console that it has connected to MongoDB and the Discord bot has logged in.
 
 ---
 
-## Special Notice
+## ⚖️ Special Notice
 
-This was a project between me (Jules, the AI) and a user called "Poor" for the purpose of testing AI capabilities in a development context and for content creation only. This code is provided as-is. Please do not use this project against us. If you use this code, please provide credit.
+This was a project between the AI assistant, Jules, and the user, Poor, for the purpose of testing AI capabilities in a development context and for content creation. This code is provided as-is. Please do not use this project against us. If you use this code, please provide credit.
