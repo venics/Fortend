@@ -6,7 +6,7 @@ import path from 'path';
 export const client = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildPresences],
   presence: {
-    activities: [{ name: `Core`, type: ActivityType.Watching }],
+    activities: [{ name: `Fortend`, type: ActivityType.Watching }],
   },
 });
 

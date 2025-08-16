@@ -28,7 +28,7 @@ export default {
     const adminIds = (process.env.ADMIN_DISCORD_IDS || '').split(',');
     if (!adminIds.includes(interaction.user.id)) {
       const embed = new EmbedBuilder()
-        .setTitle("Core")
+        .setTitle("Fortend")
         .setDescription("You do not have permissions to use this command.")
         .setColor("Red")
         .setTimestamp();
@@ -41,7 +41,7 @@ export default {
       const user = await User.findOne({ discordId: discordIdToGive });
       if (!user) {
         const embed = new EmbedBuilder()
-          .setTitle("Core")
+          .setTitle("Fortend")
           .setDescription("Couldn't find the selected user.")
           .setColor("Red")
           .setTimestamp();
@@ -52,7 +52,7 @@ export default {
       await giveFullLocker(user.accountId);
 
       const embed = new EmbedBuilder()
-        .setTitle("Core")
+        .setTitle("Fortend")
         .setDescription(`Successfully gave Full Locker to ${user.username}!`)
         .setColor("Green")
         .setTimestamp();
@@ -62,7 +62,7 @@ export default {
       console.error(err);
 
       const embed = new EmbedBuilder()
-        .setTitle("Core")
+        .setTitle("Fortend")
         .setDescription(
           "We ran into an error while giving full locker, please try again later."
         )

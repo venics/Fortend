@@ -10,7 +10,7 @@ import Tournaments from "../../db/Tournaments";
 export default {
   data: new SlashCommandBuilder()
     .setName("delete")
-    .setDescription("Permanently delete your Core account and all associated data."),
+    .setDescription("Permanently delete your Fortend account and all associated data."),
 
   async execute(interaction: ChatInputCommandInteraction) {
     try {
@@ -29,7 +29,7 @@ export default {
 
       const embed = new EmbedBuilder()
         .setTitle("Account Deleted")
-        .setDescription("Your Core account and all associated data have been successfully deleted.")
+        .setDescription("Your Fortend account and all associated data have been successfully deleted.")
         .setColor("Red")
         .setTimestamp();
 

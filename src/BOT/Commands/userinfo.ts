@@ -20,7 +20,7 @@ export default {
     const adminIds = (process.env.ADMIN_DISCORD_IDS || '').split(',');
     if (!adminIds.includes(interaction.user.id)) {
       const embed = new EmbedBuilder()
-        .setTitle("Core")
+        .setTitle("Fortend")
         .setDescription("You do not have permissions to use this command.")
         .setColor("Red")
         .setTimestamp();

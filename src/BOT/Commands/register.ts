@@ -29,7 +29,7 @@ const createInitialProfiles = (accountId: string) => {
 export default {
   data: new SlashCommandBuilder()
     .setName("register")
-    .setDescription("Create a Core account!")
+    .setDescription("Create a Fortend account!")
     .addStringOption((opt) =>
       opt.setName("username").setDescription("Username").setRequired(true)
     )
@@ -82,7 +82,7 @@ export default {
         await Tournaments.create({ accountId });
 
         const embed = new EmbedBuilder()
-            .setTitle("Welcome to Core!")
+            .setTitle("Welcome to Fortend!")
             .setDescription(`Your account, **${username}**, has been successfully created.`)
             .addFields(
                 { name: "Email", value: email, inline: true },
@@ -90,7 +90,7 @@ export default {
             )
             .setColor("#00FF99")
             .setTimestamp()
-            .setFooter({ text: "Core Backend" });
+            .setFooter({ text: "Fortend Backend" });
 
         return await interaction.reply({ embeds: [embed], ephemeral: true });
 

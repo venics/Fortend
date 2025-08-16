@@ -15,7 +15,7 @@ export default {
     const commands = (client as any).commands as Collection<string, any>;
 
     const embed = new EmbedBuilder()
-      .setTitle("Core Bot Commands")
+      .setTitle("Fortend Bot Commands")
       .setDescription("Here is a list of all available commands:")
       .setColor("#00FF99");
 

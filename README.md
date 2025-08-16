@@ -1,6 +1,6 @@
-# Core - Fortnite Private Server Backend
+# Fortend - Fortnite Private Server Backend
 
-Welcome to the Core Fortnite private server backend! This project provides the necessary server infrastructure to run a custom Fortnite experience, built with Node.js, Express, and MongoDB.
+Welcome to the Fortend Fortnite private server backend! This project provides the necessary server infrastructure to run a custom Fortnite experience, built with Node.js, Express, and MongoDB.
 
 ## ✨ Features
 
@@ -37,7 +37,7 @@ npm install
 Create a `.env` file in the root of the project by copying the `.example.env` file. You will need to fill in the following values:
 
 - `MONGODB_URI`: Your connection string for your MongoDB database.
-  - Example: `mongodb://localhost:27017/CoreBackend`
+  - Example: `mongodb://localhost:27017/FortendBackend`
 - `BOT_TOKEN`: Your Discord bot token.
 - `ADMIN_DISCORD_IDS`: A comma-separated list of Discord User IDs for bot admins (e.g., `123456789,987654321`).
 
