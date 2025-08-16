@@ -10,7 +10,7 @@ interface ShopItem {
 
 router.get('/fortnite/api/storefront/v2/catalog', async (req, res) => {
   try {
-    const shopPath = path.join(__dirname, '..', 'config', 'item-shop.json');
+    const shopPath = path.join(process.cwd(), 'Config', 'item-shop.json');
     const shopData: ShopItem = JSON.parse(await fs.readFile(shopPath, 'utf-8'));
 
     const catalogEntries = [];
