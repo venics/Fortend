@@ -1,0 +1,39 @@
+{
+  "SKIN": "CID_184_Athena_Commando_M_DurrburgerWorker",
+  "SKIN_PRICE": 1200,
+
+  "SKIN2": "CID_220_Athena_Commando_F_Clown",
+  "SKIN2_PRICE": 1500,
+
+  "SKIN3": "CID_254_Athena_Commando_M_Zombie",
+  "SKIN3_PRICE": 800,
+
+  "SKIN4": "CID_228_Athena_Commando_M_Vampire",
+  "SKIN4_PRICE": 1200,
+
+  "PICKAXE": "Pickaxe_ID_223_Jellyfish",
+  "PICKAXE_PRICE": 800,
+
+  "PICKAXE1": "Pickaxe_ID_085_Wukong",
+  "PICKAXE1_PRICE": 800,
+
+  "PICKAXE2": "Pickaxe_ID_071_StreetRacer",
+  "PICKAXE2_PRICE": 500,
+
+  "PICKAXE3": "Pickaxe_ID_432_Dummeez",
+  "PICKAXE3_PRICE": 500,
+
+  "DANCE": "EID_FancyFeet",
+  "DANCE_PRICE": 500,
+
+  "DANCE1": "EID_Maracas",
+  "DANCE1_PRICE": 200,
+
+  "GLIDER": "Glider_ID_068_GarageBand",
+  "GLIDER_PRICE": 800,
+
+  "GLIDER1": "Glider_ID_090_Celestial",
+  "GLIDER1_PRICE": 1200,
+  "SECTION_Havoc": "Pickaxe_ID_389_DonutPlate1H",
+  "SECTION_Havoc_PRICE": 800
+}
