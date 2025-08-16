@@ -1,10 +1,10 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import { startBot } from './BOT';
-import storefrontRouter from './routes/storefront';
-import profileRouter from './routes/profile';
-import contentRouter from './routes/content';
+import { startBot } from './BOT/index.js';
+import storefrontRouter from './routes/storefront.js';
+import profileRouter from './routes/profile.js';
+import contentRouter from './routes/content.js';
 
 dotenv.config({ path: '.example.env' });
 
